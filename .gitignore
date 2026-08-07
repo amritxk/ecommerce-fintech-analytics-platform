@@ -1,0 +1,23 @@
+# Python virtual environment - not portable across OS, reproducible via requirements.txt
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Generated synthetic data - large, reproducible via generate_synthetic_data.py (fixed RANDOM_SEED=42)
+synthetic_data/
+
+# dbt build artifacts - regenerated on every `dbt run`/`dbt build`
+target/
+dbt_packages/
+logs/
+
+# Credentials - defense in depth; dbt's real profiles.yml lives outside the repo in ~/.dbt/
+profiles.yml
+.env
+
+# IDE / OS noise
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
