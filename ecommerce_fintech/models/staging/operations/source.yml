@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+
+  - name: raw_operations
+    database: RAW_DB
+    schema: SCHEMA_OPERATIONS
+    description: "Event click stream data"
+    tables:
+      - name: EVENTS

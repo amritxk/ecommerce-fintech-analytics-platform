@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+
+  - name: raw_fintech
+    database: RAW_DB
+    schema: SCHEMA_FINTECH
+    description: "Accounting Transcational Data"
+    tables:
+      - name: CHARGEBACKS
+      - name: COMPLAINTS
+      - name: RETURNS
+      - name: TRANSACTIONS

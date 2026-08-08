@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: raw_ecommerce
+    database: RAW_DB
+    schema: SCHEMA_ECOMMERCE
+    description: "Raw Ecommerce Data"
+    tables:
+      - name: CUSTOMERS
+      - name: ORDERS
+      - name: ORDER_ITEMS
+      - name: PRODUCTS
+      - name: PROMOTIONS
+      - name: REVIEWS
+      - name: WISHLISTS
