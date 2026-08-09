@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: stg_customers
+    columns:
+      - name: customer_id
+        data_tests:
+          - unique
+          - not_null
+      - name: kyc_status
+        data_tests:
+          - accepted_values:
+              arguments: 
+                values: ['approved', 'pending', 'rejected']
+      - name: account_status
+        data_tests:
+          - accepted_values:
+              arguments: 
+                values: ['active', 'inactive', 'suspended']
+    
+  - name: stg_orders
+    columns: 
+      - name: order_id
+        data_tests:
+          - unique
+          - not_null
+      - name: order_status
+        data_tests:
+          - accepted_values:
+              arguments: 
+                values: ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled']
+      - name: customer_id 
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+    
+
+
+            
