@@ -36,7 +36,16 @@ models:
               arguments:
                 to: ref('stg_customers')
                 field: customer_id
-    
+
+  - name: stg_reviews
+    columns: 
+      - name: rating_stars
+        data_tests: 
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value : 1
+              max_value: 5
+
+
 
 
             
