@@ -44,6 +44,22 @@ models:
         +materialized: view
         +database: STAGING_DB
         +schema: SCHEMA_OPERATIONS
+    marts:
+      +post-hook: "grant select on {{ this }} to role READ_ONLY_ROLE"
+      dimensions:
+        +materialized: table
+        +database: MARTS_DB
+        +schema: SCHEMA_DIMENSIONS
+      facts:
+        +materialized: table
+        +database: MARTS_DB
+        +schema: SCHEMA_FACTS
+      KPIs:
+        +materialized: table
+        +database: MARTS_DB
+        +schema: SCHEMA_KPIS
+
+
         
         
     
