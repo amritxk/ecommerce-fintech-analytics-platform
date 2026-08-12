@@ -1,0 +1,16 @@
+version: 2
+
+unit_tests:
+  - name: test_kyc_status_yesno_logic
+    model: stg_customers
+    given:
+      - input: source('raw_ecommerce', 'CUSTOMERS')
+        rows:
+          - {customer_id: 'CUST_TEST_01', kyc_status: 'approved', account_status: 'active'}
+          - {customer_id: 'CUST_TEST_02', kyc_status: 'pending', account_status: 'active'}
+          - {customer_id: 'CUST_TEST_03', kyc_status: 'rejected', account_status: 'active'}
+    expect:
+      rows:
+        - {customer_id: 'CUST_TEST_01', kyc_status_yesno: 'Yes'}
+        - {customer_id: 'CUST_TEST_02', kyc_status_yesno: 'No'}
+        - {customer_id: 'CUST_TEST_03', kyc_status_yesno: 'No'}

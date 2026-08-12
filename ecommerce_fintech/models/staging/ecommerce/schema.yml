@@ -3,6 +3,8 @@ version: 2
 models:
   - name: stg_customers
     config:
+      access: protected
+      group: staging_ecommerce
       contract:
         enforced: true
     columns:

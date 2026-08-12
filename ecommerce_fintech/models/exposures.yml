@@ -1,0 +1,20 @@
+version: 2
+
+exposures:
+  - name: executive_revenue_dashboard
+    label: Executive Revenue Dashboard
+    type: dashboard
+    maturity: medium
+    url: https://example.com/dashboards/executive-revenue
+    description: >
+      A hypothetical BI dashboard used by leadership to track order volume,
+      revenue trends, customer activity, and order status distribution.
+      Represents the kind of downstream consumer a real production
+      environment would have connected to these marts models.
+    depends_on:
+      - ref('fct_orders')
+      - ref('dim_customer')
+      - ref('kpi_order_status_counts')
+    owner:
+      name: Amrit Keshri
+      email: amritkeshri1805@gmail.com
