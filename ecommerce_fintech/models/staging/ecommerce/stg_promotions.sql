@@ -1,28 +1,33 @@
-with stg_promotions as 
-(
-    select * from {{source('raw_ecommerce','PROMOTIONS')}}
+with stg_promotions as (
+    select * from {{ source('raw_ecommerce','PROMOTIONS') }}
 ),
 
 cleaned as (
-select 
-PROMOTION_ID,
-PROMO_CODE,
-PROMO_TYPE,
-DISCOUNT_VALUE,
-DISCOUNT_CAP,
-ELIGIBLE_PRODUCT_IDS,
-ELIGIBLE_CUSTOMER_SEGMENT,
-MIN_PURCHASE_AMOUNT,
-USAGE_LIMIT,
-CURRENT_USAGE,
-(CURRENT_USAGE / nullif(USAGE_LIMIT,0) )*100
- as USAGE_RATE,
-START_DATE,
-END_DATE,
-CASE WHEN CURRENT_DATE() Between START_DATE and END_DATE then 'active' else 'inactive' end as ACTUALL_VALID_STATUS,
-STATUS,
-CREATED_AT
+    select
+        promotion_id,
+        promo_code,
+        promo_type,
+        discount_value,
+        discount_cap,
+        eligible_product_ids,
+        eligible_customer_segment,
+        min_purchase_amount,
+        usage_limit,
+        current_usage,
+        start_date,
+        end_date,
+        status,
+        created_at,
+        (current_usage / nullif(usage_limit, 0)) * 100
+            as usage_rate,
+        case
+            when
+                current_date() between start_date and end_date
+                then 'active'
+            else 'inactive'
+        end as actuall_valid_status
     from stg_promotions
 
 )
+
 select * from cleaned
