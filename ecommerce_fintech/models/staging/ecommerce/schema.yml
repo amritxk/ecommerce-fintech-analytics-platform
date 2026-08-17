@@ -1,0 +1,165 @@
+version: 2
+
+models:
+  - name: stg_customers
+    config:
+      access: protected
+      group: staging_ecommerce
+      contract:
+        enforced: true
+    columns:
+      - name: customer_id
+        data_type: varchar
+        data_tests:
+          - unique
+          - not_null
+      - name: email
+        data_type: varchar
+      - name: phone
+        data_type: varchar
+      - name: first_name
+        data_type: varchar
+      - name: last_name
+        data_type: varchar
+      - name: date_of_birth
+        data_type: date
+      - name: country
+        data_type: varchar
+      - name: kyc_status
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['approved', 'pending', 'rejected']
+      - name: kyc_status_yesno
+        data_type: varchar
+      - name: kyc_verified_date
+        data_type: date
+      - name: customer_segment
+        data_type: varchar
+      - name: lifetime_purchases
+        data_type: float
+      - name: account_status
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['active', 'inactive', 'suspended']
+      - name: account_status_yesno
+        data_type: varchar
+      - name: last_purchase_date
+        data_type: date
+      - name: preferred_currency
+        data_type: varchar
+      - name: created_at
+        data_type: timestamp
+      - name: _snapshot_date
+        data_type: date
+
+  - name: stg_orders
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: order_id
+        data_type: varchar
+        data_tests:
+          - unique
+          - not_null
+      - name: customer_id
+        data_type: varchar
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+      - name: order_timestamp
+        data_type: timestamp
+      - name: order_status
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled']
+      - name: subtotal_amount
+        data_type: float
+        data_tests:
+          - column_a_greater_than_or_equal_to_column_b:
+              arguments:
+                column_b: discount_amount
+              config:
+                severity: warn
+                store_failures: true
+      - name: discount_amount
+        data_type: float
+      - name: discount_code
+        data_type: varchar
+      - name: tax_amount
+        data_type: float
+      - name: total_amount
+        data_type: float
+      - name: shipping_address
+        data_type: variant
+      - name: city
+        data_type: varchar
+      - name: country
+        data_type: varchar
+      - name: state
+        data_type: varchar
+      - name: street
+        data_type: varchar
+      - name: zip
+        data_type: varchar
+      - name: payment_method
+        data_type: varchar
+      - name: fulfillment_warehouse
+        data_type: varchar
+      - name: created_at
+        data_type: timestamp
+      - name: updated_at
+        data_type: timestamp
+      - name: _snapshot_date
+        data_type: date
+
+  - name: stg_reviews
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: review_id
+        data_type: varchar
+      - name: product_id
+        data_type: varchar
+      - name: customer_id
+        data_type: varchar
+      - name: order_item_id
+        data_type: varchar
+      - name: rating_stars
+        data_type: number
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 5
+      - name: review_title
+        data_type: varchar
+      - name: review_text
+        data_type: varchar
+      - name: sentiment_score
+        data_type: float
+      - name: sentiment_category
+        data_type: varchar
+      - name: helpful_count
+        data_type: number
+      - name: unhelpful_count
+        data_type: number
+      - name: helpfulness_ratio
+        data_type: number
+      - name: verified_purchase
+        data_type: boolean
+      - name: is_approved
+        data_type: boolean
+      - name: moderated_by
+        data_type: varchar
+      - name: created_at
+        data_type: timestamp

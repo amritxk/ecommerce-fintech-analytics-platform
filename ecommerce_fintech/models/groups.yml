@@ -1,0 +1,10 @@
+version: 2
+
+groups:
+  - name: staging_ecommerce
+    owner:
+      name: Data Engineering
+
+  - name: marts_team
+    owner:
+      name: Analytics Team
