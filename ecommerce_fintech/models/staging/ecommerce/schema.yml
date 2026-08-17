@@ -88,6 +88,9 @@ models:
           - column_a_greater_than_or_equal_to_column_b:
               arguments:
                 column_b: discount_amount
+              config:
+                severity: warn
+                store_failures: true
       - name: discount_amount
         data_type: float
       - name: discount_code
