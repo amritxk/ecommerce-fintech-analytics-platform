@@ -2,7 +2,7 @@ with order_summary as (
 
     select
         customer_id,
-        count(order_id)   as total_orders,
+        count(order_id) as total_orders,
         sum(total_amount) as lifetime_spend
 
     from {{ ref('fct_orders') }}
@@ -20,7 +20,7 @@ final as (
 
     select
         customers.customer_id,
-        coalesce(order_summary.total_orders, 0)   as total_orders,
+        coalesce(order_summary.total_orders, 0) as total_orders,
         coalesce(order_summary.lifetime_spend, 0) as lifetime_spend
 
     from customers

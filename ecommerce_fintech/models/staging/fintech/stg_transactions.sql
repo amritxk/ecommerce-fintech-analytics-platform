@@ -2,25 +2,30 @@ with stg_transactions as (
     select * from {{ source('raw_fintech', 'TRANSACTIONS') }}
 ),
 
-cleaned  as (
-select 
-TRANSACTION_ID,
-ORDER_ID,
-CUSTOMER_ID,
-TRANSACTION_TYPE,
-AMOUNT,
-CURRENCY,
-STATUS,
-PAYMENT_METHOD,
-CARD_LAST_4,
-GATEWAY_RESPONSE,
-AUTHORIZATION_CODE,
-MERCHANT_FEE,
-CREATED_AT,
-UPDATED_AT,
-_LOADED_AT
-from stg_transactions
-QUALIFY (ROW_NUMBER() over (PARTITION BY TRANSACTION_ID order by  _LOADED_AT desc))=1
+cleaned as (
+    select
+        transaction_id,
+        order_id,
+        customer_id,
+        transaction_type,
+        amount,
+        currency,
+        status,
+        payment_method,
+        card_last_4,
+        gateway_response,
+        authorization_code,
+        merchant_fee,
+        created_at,
+        updated_at,
+        _loaded_at
+    from stg_transactions
+    qualify
+        (
+            ROW_NUMBER()
+                over (partition by transaction_id order by _loaded_at desc)
+        )
+        = 1
 )
 
 select * from cleaned

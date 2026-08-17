@@ -1,0 +1,12 @@
+[sqlfluff]
+templater = dbt
+dialect = snowflake
+
+[sqlfluff:templater:dbt]
+profiles_dir = ~/.dbt
+project_dir = .
+profile = ecommerce_fintech
+target = dev
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = lower

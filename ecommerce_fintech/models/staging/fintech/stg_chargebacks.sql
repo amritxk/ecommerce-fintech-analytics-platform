@@ -3,21 +3,21 @@ with stg_chargebacks as (
 ),
 
 cleaned as (
-select 
-CHARGEBACK_ID,
-TRANSACTION_ID,
-ORDER_ID,
-CUSTOMER_ID,
-DISPUTE_REASON,
-AMOUNT,
-CHARGEBACK_STATUS,
-chargeback_status in ('new', 'investigation')  as IS_OPEN,
-FILED_DATE,
-RESOLUTION_DATE,
-(DATEDIFF ('day',FILED_DATE,RESOLUTION_DATE),0) as DAYS_to_RESOLVE,
-EVIDENCE_PROVIDED,
-CREATED_AT
-from stg_chargebacks
+    select
+        chargeback_id,
+        transaction_id,
+        order_id,
+        customer_id,
+        dispute_reason,
+        amount,
+        chargeback_status,
+        filed_date,
+        resolution_date,
+        evidence_provided,
+        created_at,
+        chargeback_status in ('new', 'investigation') as is_open,
+        (DATEDIFF('day', filed_date, resolution_date), 0) as days_to_resolve
+    from stg_chargebacks
 
 )
 

@@ -1,4 +1,3 @@
-
 {{
   config(
     materialized = 'incremental',
@@ -21,7 +20,7 @@ with orders as (
     select * from {{ ref('stg_orders') }}
 
     {% if is_incremental() %}
-    where updated_at > '{{ max_updated_at }}'
+        where updated_at > '{{ max_updated_at }}'
     {% endif %}
 
 ),
@@ -31,7 +30,7 @@ order_items_agg as (
     select
         order_id,
         count(order_item_id) as total_items,
-        sum(quantity)         as total_quantity
+        sum(quantity) as total_quantity
 
     from {{ ref('stg_order_items') }}
     group by order_id

@@ -4,37 +4,33 @@ with stg_order as (
     select * from {{ source('raw_ecommerce', 'ORDERS') }}
 ),
 
-cleaned as 
-( select 
-ORDER_ID,
-CUSTOMER_ID,
-ORDER_TIMESTAMP,
-ORDER_STATUS,
-SUBTOTAL_AMOUNT,
-DISCOUNT_AMOUNT,
-DISCOUNT_CODE,
-TAX_AMOUNT,
-TOTAL_AMOUNT,
-SHIPPING_ADDRESS,
-{% for col in field %}
-SHIPPING_ADDRESS:{{col}}::string as {{col}},
-{% endfor %}
+cleaned as (
+    select
+        order_id,
+        customer_id,
+        order_timestamp,
+        order_status,
+        subtotal_amount,
+        discount_amount,
+        discount_code,
+        tax_amount,
+        total_amount,
+        shipping_address,
+        {% for col in field %}
+            shipping_address:{{ col }}::string as {{ col }},
+        {% endfor %}
 {# SHIPPING_ADDRESS:city::string as CITY,
 SHIPPING_ADDRESS:country::string as COUNTRY,
 
 SHIPPING_ADDRESS:state::string as STATE,
 SHIPPING_ADDRESS:street::string as STREET,
 SHIPPING_ADDRESS:zip::string as ZIP, #}
-PAYMENT_METHOD,
-FULFILLMENT_WAREHOUSE,
-CREATED_AT,
-UPDATED_AT,
-_SNAPSHOT_DATE
-from stg_order
+        payment_method,
+        fulfillment_warehouse,
+        created_at,
+        updated_at,
+        _snapshot_date
+    from stg_order
 )
 
 select * from cleaned
-
-
-
-
